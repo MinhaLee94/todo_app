@@ -1,18 +1,34 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { theme } from './colors';
 
 export default function App() {
+	const [workFocus, setWorkFocus] = useState(true);
+	const [text, setText] = useState("");
+	const work = () => setWorkFocus(true);
+	const memo = () => setWorkFocus(false);
+
+	const onChangeTest = (event) => setText(event);
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
 			<View style={styles.header}>
-				<TouchableOpacity>
-					<Text style={styles.btnText}>Work</Text>
+				<TouchableOpacity onPress={work}>
+					<Text style={{...styles.btnText, color: workFocus ? "white" : theme.grey }}>Work</Text>
 				</TouchableOpacity>
-				<TouchableOpacity>
-					<Text style={styles.btnText}>Memo</Text>
+				<TouchableOpacity onPress={memo}>
+					<Text style={{...styles.btnText, color: !workFocus ? "white" : theme.grey }}>Memo</Text>
 				</TouchableOpacity>
+			</View>
+			<View>
+				<TextInput
+					onChangeText={onChangeTest}
+					value={text}
+					placeholder={ workFocus ? "Add your work schedules" : "Anything to note?" } 
+					style={styles.input}
+				/>
 			</View>
     </View>
   );
@@ -32,6 +48,13 @@ const styles = StyleSheet.create({
 	btnText: {
 		fontSize: 38,
 		fontWeight: "600",
-		color: "white"
+	},
+	input: {
+		backgroundColor: "white",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    marginTop: 20,
+    fontSize: 18,
 	}
 });
